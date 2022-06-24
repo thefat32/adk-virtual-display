@@ -58,7 +58,7 @@
 
 /* Endpoint Addresses TODO get from interface descriptor */
 #define AOA_ACCESSORY_EP_IN		0x81
-#define AOA_ACCESSORY_EP_OUT		0x02
+#define AOA_ACCESSORY_EP_OUT		0x01
 #define AOA_ACCESSORY_INTERFACE		0x00
 
 /* App defines */

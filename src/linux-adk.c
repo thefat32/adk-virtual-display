@@ -33,7 +33,7 @@ volatile int stop_acc = 0;
 int verbose = 0;
 
 static const accessory_t acc_default = {
-	.device = "18d1:4e42",
+	.device = "18d1:4ee7",
 	.manufacturer = "Google, Inc.",
 	.model = "AccessoryChat",
 	.description = "Sample Program",
@@ -207,11 +207,55 @@ static int init_accessory(accessory_t * acc, int aoa_max_version)
 	printf("Looking for device %4.4x:%4.4x\n", vid, pid);
 
 	/* Trying to open it */
-	acc->handle = libusb_open_device_with_vid_pid(NULL, vid, pid);
+	 acc->handle = libusb_open_device_with_vid_pid(NULL, vid, pid);
+
+
 	if (acc->handle == NULL) {
 		printf("Unable to open device...\n");
 		return -1;
 	}
+
+	//struct libusb_device** device_list;
+
+	//int deviceCount = libusb_get_device_list(NULL, &device_list);
+
+	//int i;
+	//for (i = 0; i < deviceCount; i++) {
+	//	struct libusb_device* device = device_list[i];
+	//	struct libusb_device_descriptor desc;
+	//	libusb_get_device_descriptor(device, &desc);
+	//	printf("Testing device %d:%d\n", desc.idVendor, desc.idProduct);
+	//	/* Now asking if device supports Android Open Accessory protocol */
+	//	libusb_open(device, &acc->handle);
+	//	if(acc->handle != NULL) {
+	//		ret = libusb_control_transfer(acc->handle,
+	//			LIBUSB_ENDPOINT_IN |
+	//			LIBUSB_REQUEST_TYPE_VENDOR,
+	//			AOA_GET_PROTOCOL, 0, 0, buffer,
+	//			sizeof(buffer), 0);
+	//		if (ret < 0) {
+	//			printf("Error getting protocol...\n");
+	//			libusb_close(acc->handle);
+	//			acc->handle = NULL;
+	//		}
+	//		else {
+	//			acc->aoa_version = ((buffer[1] << 8) | buffer[0]);
+	//			printf("Device supports AOA %d.0!\n", acc->aoa_version);
+	//			break;
+	//		}
+	//	}
+	//	else {
+	//		printf("Error opening device...\n");
+	//	}
+	//}
+
+	//libusb_free_device_list(device_list, 1);
+
+	//if (acc->handle == NULL) {
+	//	printf("No supported device found\n");
+	//	return -1;
+	//}
+
 
 	/* Now asking if device supports Android Open Accessory protocol */
 	ret = libusb_control_transfer(acc->handle,
@@ -353,17 +397,17 @@ static int is_accessory_present(accessory_t * acc)
 	uint16_t pid = 0;
 
 	/* Trying to open all the AOA IDs possible */
-	pid = AOA_ACCESSORY_PID;
-	handle = libusb_open_device_with_vid_pid(NULL, vid, pid);
-	if (handle != NULL)
-		goto claim;
+	//pid = AOA_ACCESSORY_PID;
+	//handle = libusb_open_device_with_vid_pid(NULL, vid, pid);
+	//if (handle != NULL)
+	//	goto claim;
 
 	pid = AOA_ACCESSORY_ADB_PID;
 	handle = libusb_open_device_with_vid_pid(NULL, vid, pid);
 	if (handle != NULL)
 		goto claim;
 
-	pid = AOA_AUDIO_PID;
+	/*pid = AOA_AUDIO_PID;
 	handle = libusb_open_device_with_vid_pid(NULL, vid, pid);
 	if (handle != NULL)
 		goto claim;
@@ -381,7 +425,7 @@ static int is_accessory_present(accessory_t * acc)
 	pid = AOA_ACCESSORY_AUDIO_ADB_PID;
 	handle = libusb_open_device_with_vid_pid(NULL, vid, pid);
 	if (handle != NULL)
-		goto claim;
+		goto claim;*/
 
 	return 0;
 
